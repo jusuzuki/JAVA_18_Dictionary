@@ -1,4 +1,4 @@
-<h1>DICTIONARY</h1>
+<h1>YOUR DICTIONARY</h1>
 <h2>List of words in your dictionary:</h2>
 
 <table class="table table-striped">
@@ -15,7 +15,9 @@
           <a href="/words/$word.getId()">$word.getWord()</a>
       </td>
       <td>
-          $word.getDefinitions()
+        #foreach($definition in $word.getDefinitions())
+          $definition.getDefinition() <br>
+        #end
       </td>
     </tr>
     #end

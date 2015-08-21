@@ -1,10 +1,25 @@
-<h3>Here are all the definitions for $word.getWord():</h3>
+<h1>YOUR DICTIONARY</h1>
 
+<h2>Here are all the definitions for <mark>"$word.getWord()"</mark>:</h2>
+
+<ul>
 #foreach($definition in $word.getDefinitions())
- <h3>$definition.getDefinition()</a></h3>
+ <li>$definition.getDefinition()</li>
 #end
+</ul>
 
 <hr/>
-<a href="/words/$word.getId()/definitions/new">Add a new definition</a>
+<form action="/words" method="post">
+  <input id="wordId" name="wordId" type="hidden" value="$word.getId()">
+
+  <div class="form-group">
+    <label for="definition">Insert new definition:</label>
+    <input id="definition" name="definition" type="text" class="form-control">
+  </div>
+
+  <button type="submit" class="btn">Add definition</button>
+</form>
+
+<hr/>
 <br>
 <a href="/">Return to Main Page</a>
