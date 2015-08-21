@@ -1,5 +1,30 @@
 <h1>DICTIONARY</h1>
-<form action='/newword'>
+<form action='/newword' method="post">
+<h2>List of words in your dictionary:</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Word</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    #foreach ($word in $words)
+    <tr>
+      <td>
+          $word.getWord()
+      </td>
+      <td>
+          $definition.getDefinition()
+      </td>
+    </tr>
+    #end
+  </tbody>
+</table>
+
+<br>
+<hr/>
 <h2>Add a new word</h2>
   <div class='form-group'>
     <label>Word:</label>

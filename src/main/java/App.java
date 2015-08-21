@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import static spark.Spark.*;
@@ -13,19 +14,36 @@ public class App {
     get("/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/index.vtl");
+
+      model.put("words", request.session().attribute("words"));
+      model.put("definitions", request.session().attribute("definitions"));
+
       return new ModelAndView(model, layout);
    }, new VelocityTemplateEngine());
 
-   get("/newword", (request, response) -> {
+    post("/newword", (request, response) -> {
      HashMap<String, Object> model = new HashMap<String, Object>();
-     // Category category = Category.find(Integer.parseInt(request.queryParams("categoryId")));
+     ArrayList<Word> words = request.session().attribute("words");
+     ArrayList<Definition> definitions = request.session().attribute("definitions");
+
+     if (words == null) {
+       words = new ArrayList<Word>();
+       request.session().attribute("words", words);
+     }
+
+     if (definitions == null) {
+       definitions = new ArrayList<Definition>();
+       request.session().attribute("definitions", definitions);
+     }
+
      String word = request.queryParams("inputword");
-     String definition = request.queryParams("inputdef");
      Word newWord = new Word(word);
+     words.add(newWord);
+
+     String definition = request.queryParams("inputdef");
      Definition newDef = new Definition(definition);
-     String readWord = newWord.getWord();
-     model.put("newWord", newWord);
-     model.put("newDef", newDef);
+     definitions.add(newDef);
+
      model.put("template", "templates/newword.vtl");
      return new ModelAndView(model, layout);
    }, new VelocityTemplateEngine());

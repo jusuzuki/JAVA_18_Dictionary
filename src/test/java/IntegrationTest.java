@@ -23,4 +23,13 @@ public class IntegrationTest extends FluentTest {
   	assertThat(pageSource()).contains("DICTIONARY");
   }
 
+  @Test
+    public void wordIsDisplayedTest() {
+      goTo("http://localhost:4567/");
+      fill("#inputword").with("Coffee");
+      submit(".btn");
+      click("a", withText("Go Back"));
+      assertThat(pageSource()).contains("Coffee");
+    }
+
 }
