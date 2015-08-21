@@ -16,38 +16,51 @@ public class App {
       model.put("template", "templates/index.vtl");
 
       model.put("words", request.session().attribute("words"));
-      model.put("definitions", request.session().attribute("definitions"));
 
       return new ModelAndView(model, layout);
    }, new VelocityTemplateEngine());
 
-    post("/newword", (request, response) -> {
+    post("/addword", (request, response) -> {
      HashMap<String, Object> model = new HashMap<String, Object>();
      ArrayList<Word> words = request.session().attribute("words");
-     ArrayList<Definition> definitions = request.session().attribute("definitions");
 
      if (words == null) {
        words = new ArrayList<Word>();
        request.session().attribute("words", words);
      }
 
-     if (definitions == null) {
-       definitions = new ArrayList<Definition>();
-       request.session().attribute("definitions", definitions);
-     }
-
      String word = request.queryParams("inputword");
      Word newWord = new Word(word);
      words.add(newWord);
-
-     String definition = request.queryParams("inputdef");
-     Definition newDef = new Definition(definition);
-     definitions.add(newDef);
 
      model.put("template", "templates/newword.vtl");
      return new ModelAndView(model, layout);
    }, new VelocityTemplateEngine());
 
+   get("/words/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("word", Word.find(Integer.parseInt(request.params(":id"))));
+      model.put("template", "templates/word.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/words/:id/definitions/new", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("word", Word.find(Integer.parseInt(request.params(":id"))));
+      model.put("template", "templates/add_definition.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/words", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Word word = Word.find(Integer.parseInt(request.queryParams("wordId")));
+      String definition = request.queryParams("definition");
+      Definition newDef = new Definition(definition);
+      word.addDefinition(newDef);
+      model.put("word", word);
+      model.put("template", "templates/word.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
   }
 }
