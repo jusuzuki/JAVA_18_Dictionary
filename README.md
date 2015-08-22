@@ -1,7 +1,7 @@
 # Dictionary
 
 ##### A simple program that lets users create a dictionary.
-Created on August 2015
+Created in August 2015
 By Juliana Suzuki
 
 ## Description
