@@ -24,12 +24,39 @@ public class IntegrationTest extends FluentTest {
   }
 
   @Test
-    public void wordIsDisplayedTest() {
-      goTo("http://localhost:4567/");
-      fill("#inputword").with("Coffee");
-      submit(".btn");
-      click("a", withText("Go Back"));
-      assertThat(pageSource()).contains("Coffee");
-    }
+  public void wordIsDisplayed() {
+    goTo("http://localhost:4567/");
+    fill("#inputword").with("coffee");
+    submit(".btn");
+    click("a", withText("Go Back"));
+    assertThat(pageSource()).contains("coffee");
+  }
+
+  @Test
+  public void addDefinition() {
+    goTo("http://localhost:4567/");
+    fill("#inputword").with("root beer");
+    submit(".btn");
+    click("a", withText("Go Back"));
+    assertThat(pageSource()).contains("root beer");
+    click("a", withText("root beer"));
+    fill("#definition").with("an effervescent drink made from an extract of the roots and bark of certain plants.");
+    assertThat(pageSource()).contains("an effervescent drink made from an extract of the roots and bark of certain plants.");
+  }
+
+  // Changed the project a little to display the words as well as their definitions on the homepage
+  @Test
+  public void homeDisplaysWordsAndDefinition() {
+    goTo("http://localhost:4567/");
+    fill("#inputword").with("chai");
+    submit(".btn");
+    click("a", withText("Go Back"));
+    assertThat(pageSource()).contains("chai");
+    click("a", withText("chai"));
+    fill("#definition").with("a type of Indian tea, made especially by boiling the tea leaves with milk, sugar, and cardamom");
+    submit(".btn");
+    click("a", withText("Return to Main Page"));
+    assertThat(pageSource()).contains("a type of Indian tea, made especially by boiling the tea leaves with milk, sugar, and cardamom");
+  }
 
 }
