@@ -1,1 +1,1 @@
-web: ./build/install/todo-list/bin/dictionary
+web: ./build/install/dictionary/bin/dictionary
